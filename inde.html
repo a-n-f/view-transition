@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Gallery with View Transitions</title>
+    <style>
+        /* A modern reset and basic styles */
+        *, *::before, *::after { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: #1a1a1a;
+            color: #f0f0f0;
+        }
+
+        /* The main gallery grid */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+            gap: 1.5rem;
+            padding: 1.5rem;
+            max-width: 1200px;
+            margin: auto;
+            margin-top: 10%;
+        }
+
+        .gallery-item {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            border-radius: 12px;
+            overflow: hidden;
+            background-color: #2a2a2a;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: transform 0.2s ease;
+        }
+        
+        .gallery-item:hover {
+            transform: scale(1.03);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .item-title {
+            padding: 1rem;
+            font-weight: bold;
+        }
+
+        /* The detail view overlay */
+        .detail-view {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            display: grid;
+            place-content: center;
+            padding: 2rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+
+        .detail-view:target {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .detail-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .detail-view img {
+            max-width: 80vw;
+            max-height: 70vh;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .detail-title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+            text-align: center;
+        }
+        
+        .detail-back-link {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            cursor: pointer;
+        }
+
+        /* ========================================
+        THE MAGIC: VIEW TRANSITIONS API 
+        ========================================
+        */
+        
+        /* Step 1: Give unique transition names to elements that should morph */
+        .gallery-item img, .detail-view img {
+            view-transition-name: selected-image; 
+        }
+
+        .item-title, .detail-title {
+            view-transition-name: selected-title;
+        }
+        
+        /* This enables the smooth cross-fade for the whole transition */
+        html::view-transition {
+          transition: 0.4s ease;
+        }
+    </style>
+</head>
+<body>
+
+    <main class="gallery">
+        <a href="#item-1" class="gallery-item">
+            <img src="https://picsum.photos/id/1025/400/300" alt="A cute dog">
+            <span class="item-title">Loyal Companion</span>
+        </a>
+        <a href="#item-2" class="gallery-item">
+            <img src="https://picsum.photos/id/1062/400/300" alt="A serene lake">
+            <span class="item-title">Serene Lake</span>
+        </a>
+        <a href="#item-3" class="gallery-item">
+            <img src="https://picsum.photos/id/1074/400/300" alt="A mountain landscape">
+            <span class="item-title">Mountain Majesty</span>
+        </a>
+    </main>
+
+    <section id="item-1" class="detail-view">
+        <a href="#" class="detail-back-link"></a>
+        <div class="detail-content">
+            <img src="https://picsum.photos/id/1025/800/600" alt="A cute dog">
+            <h1 class="detail-title">Loyal Companion</h1>
+        </div>
+    </section>
+
+    <section id="item-2" class="detail-view">
+        <a href="#" class="detail-back-link"></a>
+        <div class="detail-content">
+            <img src="https://picsum.photos/id/1062/800/600" alt="A serene lake">
+            <h1 class="detail-title">Serene Lake</h1>
+        </div>
+    </section>
+
+    <section id="item-3" class="detail-view">
+        <a href="#" class="detail-back-link"></a>
+        <div class="detail-content">
+            <img src="https://picsum.photos/id/1074/800/600" alt="A mountain landscape">
+            <h1 class="detail-title">Mountain Majesty</h1>
+        </div>
+    </section>
+
+</body>
+</html>
